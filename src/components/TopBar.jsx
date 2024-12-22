@@ -1,10 +1,11 @@
 import logo from '../assets/letsblog.png'
 import { FaFacebook, FaInstagram, FaPinterest, FaSearch, FaTwitter } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { Link } from 'react-router-dom';
 
 export default function TopBar() {
     return (
-        <section className='py-2 md:py-5 px-2'>
+        <section className='py-2 md:py-5 px-2 bg-base-100'>
             <nav className='flex justify-between container mx-auto items-start'>
                 <div className='md:flex gap-3 hidden'>
                     <FaFacebook />
@@ -44,8 +45,11 @@ export default function TopBar() {
                                         </svg>
                                     </label>
                                 </div>
-                                <li><a>Sidebar Item 1</a></li>
-                                <li><a>Sidebar Item 2</a></li>
+                                <li><Link>Home</Link>  </li>
+                                <li><Link>Add Blog</Link>  </li>
+                                <li><Link>All blogs</Link>  </li>
+                                <li><Link> Featured Blogs</Link>  </li>
+                                <li><Link>Wishlist</Link>  </li>
                                 <div className='flex gap-3 mt-7 justify-center opacity-55'>
                                     <a href=""> <FaFacebook /></a>
                                     <a href=""> <FaTwitter /></a>
