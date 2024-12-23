@@ -24,13 +24,13 @@ const RecentBlogs = () => {
 
     return (
         <section className="py-16 bg-gray-50" data-aos="fade-up">
-            <div className="container mx-auto px-6 text-center">
+            <div className="container mx-auto text-center">
                 <h2 className="text-3xl font-semibold text-gray-800 mb-8">Recent Blogs</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {blogs.map((blog, index) => (
                         <div
                             key={index}
-                            className="bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105"
+                            className="bg-white rounded-sm shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105"
                             data-aos="flip-left"
                         >
                             <img
@@ -54,7 +54,7 @@ const RecentBlogs = () => {
                                     </Link>
                                     {/* Wishlist Button */}
                                     <button
-                                        className="btn btn-sm rounded-sm bg-yellow-600 text-white hover:bg-yellow-700"
+                                        className="btn btn-sm rounded-sm bg-[#b28b51] text-white hover:bg-yellow-700"
                                         onClick={() => handleAddToWishlist(blog._id)}
                                     >
                                         Add to Wishlist
