@@ -11,6 +11,8 @@ import FeaturedBlog from "../pages/FeaturedBlog/FeaturedBlog";
 import WishList from "../pages/WishList/WishList";
 import PrivateRoutes from "./PrivateRoutes";
 import ErrorPage from "../pages/ErrorPage";
+import BlogDetails from "../pages/AllBlogs/BlogDetails";
+import UpdateBlog from "../pages/UpdateBlog";
 
 const router = createBrowserRouter([
     {
@@ -34,6 +36,16 @@ const router = createBrowserRouter([
             {
                 path: '/featured-blog',
                 element: <FeaturedBlog />
+            },
+            {
+                path: "/blog/:id",
+                element: <PrivateRoutes><BlogDetails /></PrivateRoutes>,
+                loader: ({ params }) => fetch(`http://localhost:5001/api/blog/${params.id}`)
+            },
+            {
+                path: "/update-blog/:id",
+                element: <PrivateRoutes><UpdateBlog /> </PrivateRoutes>,
+                loader: ({ params }) => fetch(`http://localhost:5001/api/blog/${params.id}`)
             },
             {
                 path: '/wish-list',

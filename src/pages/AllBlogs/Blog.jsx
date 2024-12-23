@@ -21,7 +21,7 @@ export default function Blog({ blog }) {
                 <div className="flex justify-between items-center mt-4">
                     <Link
                         className="text-sm text-[#b28b51] hover:text-black flex items-center gap-1"
-                        to={`/blog/${blog.id}`}
+                        to={`/blog/${blog._id}`}
                     >
                         <FaBookOpenReader /> Read More
                     </Link>
@@ -44,6 +44,6 @@ Blog.propTypes = {
         title: PropTypes.string.isRequired,
         shortDescription: PropTypes.string.isRequired,
         category: PropTypes.string.isRequired,
-        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+        _id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     }).isRequired,
 };

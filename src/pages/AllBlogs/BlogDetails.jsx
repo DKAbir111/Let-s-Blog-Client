@@ -1,0 +1,117 @@
+import { useContext, useEffect, useState } from "react";
+import { useParams, Link, useLoaderData } from "react-router-dom";
+import axios from "axios";
+import AuthContext from "../../context/AuthContext";
+
+export default function BlogDetails() {
+  const { user } = useContext(AuthContext)
+  const { id } = useParams();
+  const blog = useLoaderData()
+  const [comments, setComments] = useState([]);
+  const [commentText, setCommentText] = useState("");
+
+
+  // Fetch comments for this blog
+  useEffect(() => {
+    axios
+      .get(`/api/comments?blogId=${id}`)
+      .then((response) => setComments(response.data))
+      .catch((error) => console.error(error));
+  }, [id]);
+
+  // Submit a new comment
+  const handleCommentSubmit = () => {
+    if (commentText.trim() === "") return;
+
+    const newComment = {
+      blogId: id,
+      userName: user?.displayName,
+      userProfilePic: user?.photoURL,
+      text: commentText,
+    };
+
+    axios
+      .post("/api/comments", newComment)
+      .then((response) => {
+        setComments((prev) => [...prev, response.data]);
+        setCommentText("");
+      })
+      .catch((error) => console.error(error));
+  };
+
+  // Conditional rendering for textarea and update button
+  const isOwner = user?.email && blog?.email === user.email;
+
+  return (
+    <div className="max-w-4xl mx-auto p-4">
+      {blog && (
+        <div>
+          {/* Blog Header */}
+          <img
+            src={blog.imageUrl}
+            alt="Blog Image"
+            className="w-full h-80 object-cover rounded-lg"
+          />
+          <h1 className="text-3xl font-lustria mt-4">{blog.title}</h1>
+          <p className="text-sm text-gray-500 mt-2">{blog.category}</p>
+          <p className="text-gray-600 mt-4">{blog.shortDescription}</p>
+          <p className="text-gray-600 mt-4">{blog.longDescription}</p>
+
+          {/* Conditional Update Button */}
+          {isOwner && (
+            <Link
+              to={`/update-blog/${id}`}
+              className="block bg-[#b28b51] text-white text-center py-2 px-4 mt-4 rounded-lg hover:bg-[#8d6c42]"
+            >
+              Update Blog
+            </Link>
+          )}
+
+          {/* Comments Section */}
+          <div className="mt-8">
+            <h2 className="text-xl font-semibold mb-4">Comments</h2>
+            {isOwner ? (
+              <p className="text-gray-500">You cannot comment on your own blog.</p>
+            ) : (
+              <div>
+                <textarea
+                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#b28b51]"
+                  placeholder="Write a comment..."
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
+                />
+                <button
+                  className="bg-[#b28b51] text-white py-2 px-4 mt-2 rounded-lg hover:bg-[#8d6c42]"
+                  onClick={handleCommentSubmit}
+                >
+                  Submit Comment
+                </button>
+              </div>
+            )}
+
+            {/* Render Comments */}
+            <div className="mt-6 space-y-4">
+              {Array.isArray(comments) && comments.length > 0 ? (
+                comments.map((comment) => (
+                  <div key={comment._id} className="border border-gray-200 p-4 rounded-lg flex gap-4">
+                    <img
+                      src={comment.userProfilePic}
+                      alt="User Profile"
+                      className="w-12 h-12 rounded-full object-cover"
+                    />
+                    <div>
+                      <p className="font-semibold">{comment.userName}</p>
+                      <p className="text-gray-600">{comment.text}</p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>No comments yet.</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
