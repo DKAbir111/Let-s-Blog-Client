@@ -1,10 +1,12 @@
-import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import AuthContext from '../context/AuthContext';
+import { toast } from 'react-toastify';
+import { FcGoogle } from "react-icons/fc";
 
 export default function Login() {
     const navigate = useNavigate();
-
+    const { loginUser, googleSignin } = useContext(AuthContext)
     // State for password visibility toggle
     const [showPassword, setShowPassword] = useState(false);
     const [password, setPassword] = useState('');
@@ -14,32 +16,38 @@ export default function Login() {
         setShowPassword(prevState => !prevState);
     };
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
+    //handle google sign in
+    const handleGoogleSignIn = () => {
+        googleSignin()
+            .then(result => {
+                if (result?.user?.email) {
+                    toast.success('Logged in successfully')
+                    navigate(location?.state || "/", { state: location.pathname });
+                }
+            })
+            .catch(error => {
+                toast.error(error.message)
+            });
+    }
 
+    const handleLogin = async (e) => {
+        e.preventDefault()
         const email = e.target.email.value;
         const password = e.target.password.value;
-
-        try {
-            const response = await axios.post('https://japanese-learing-server.vercel.app/api/auth/login', { email, password });
-
-            const { token, role } = response.data;
-
-            localStorage.setItem('authToken', token);
-            localStorage.setItem('userRole', role);
-
-            if (role === 'admin') {
-                navigate('/admin');
-            } else {
-                navigate('/user');
-            }
-        } catch (error) {
-            console.error('Error during login:', error.response?.data || error.message);
-        }
+        loginUser(email, password)
+            .then(result => {
+                if (result?.user?.email) {
+                    toast.success('Logged in successfully')
+                    e.target.reset();
+                    navigate('/')
+                }
+            }).catch(error => {
+                toast.error(error.message)
+            })
     };
 
     return (
-        <div className="bg-base-200 min-h-screen  flex justify-center items-center font-lato">
+        <div className="bg-base-200 min-h-screen flex justify-center items-center font-lato">
             <div className="card bg-white shadow-lg rounded-sm p-8 w-full max-w-md">
                 <h2 className="text-2xl text-center text-[#b28b51] mb-6 font-lustria font-bold">
                     Login
@@ -94,6 +102,17 @@ export default function Login() {
                     </div>
                 </form>
 
+                {/* Google Sign-In Button */}
+                <div className="mt-4 flex items-center justify-center">
+                    <button
+                        className="btn bg-white border border-[#b28b51] text-[#b28b51] flex items-center w-full py-3 rounded-sm"
+                        onClick={handleGoogleSignIn}
+                    >
+                        <FcGoogle />
+                        Sign in with Google
+                    </button>
+                </div>
+
                 {/* Register Link */}
                 <div className="mt-4 text-center">
                     <small className="text-sm text-gray-600">
@@ -103,5 +122,6 @@ export default function Login() {
                 </div>
             </div>
         </div>
+
     );
 }

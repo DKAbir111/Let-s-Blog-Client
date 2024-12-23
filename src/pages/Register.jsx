@@ -1,12 +1,15 @@
-import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { FaFileUpload } from 'react-icons/fa';
+import { toast } from 'react-toastify';
+import AuthContext from '../context/AuthContext';
+import { updateProfile } from 'firebase/auth';
+import auth from '../Firebase/Firebase.init';
 
 export default function Register() {
-    const navigate = useNavigate();
+    const { createUser } = useContext(AuthContext)
     const imageRef = useRef(null)
+    const navigate = useNavigate()
     const [imageUrl, setImageURl] = useState('')
     const handleFileUpload = (event) => {
         const file = event.target.files[0];
@@ -32,40 +35,53 @@ export default function Register() {
     }
     // State to manage password visibility and validation
     const [showPassword, setShowPassword] = useState(false);
-    const [password, setPassword] = useState('');
-    const [isPasswordValid, setIsPasswordValid] = useState(true);
-
     // Toggle password visibility
     const togglePassword = () => {
         setShowPassword(prevState => !prevState);
     };
+    const validatePassword = (password) => {
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+        const hasDigit = /\d/.test(password);
+        const isValidLength = password.length >= 6;
 
-    // Handle password input and validate length
-    const handlePasswordChange = (e) => {
-        const passwordValue = e.target.value;
-        setPassword(passwordValue);
-        setIsPasswordValid(passwordValue.length >= 6); // Password validation (at least 6 characters)
+        if (!hasUpperCase) return "Password must contain at least one uppercase letter.";
+        if (!hasLowerCase) return "Password must contain at least one lowercase letter.";
+        if (!hasSpecialChar) return "Password must contain at least one special character.";
+        if (!hasDigit) return "Password must contain at least one digit.";
+        if (!isValidLength) return "Password must be at least 6 characters long.";
+        return null;
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         const username = e.target.name.value;
         const email = e.target.email.value;
-        // const photo = e.target.photo.value;
-        const newUser = { username, email, password, photo: imageUrl };
-
-        // Send a POST request to your backend
-        try {
-            const response = await axios.post('https://japanese-learing-server.vercel.app/api/auth/register', newUser);
-            if (response.data) {
-                toast.success('User Successfully Registered');
-            }
-            navigate('/');
-        } catch (error) {
-            console.error('Error during registration:', error.response?.data || error.message);
-            navigate('/register');
+        const password = e.target.password.value;
+        const validationError = validatePassword(password);
+        if (validationError) {
+            toast.error(validationError);
+            return;
         }
+        const newUser = { username, email, password, photo: imageUrl };
+        console.log(newUser);
+
+        createUser(email, password)
+            .then((result) => {
+                if (result) {
+                    updateProfile(auth.currentUser, {
+                        displayName: username,
+                        photoURL: imageUrl,
+                    });
+                    toast.success("Account created successfully!");
+                    e.target.reset();
+                    navigate('/')
+                }
+            })
+            .catch((error) => {
+                toast.error(error.message);
+            });
     };
 
     return (
@@ -105,7 +121,7 @@ export default function Register() {
                         <label className="label text-sm font-semibold text-[#b28b51]">Profile Picture URL</label>
                         <input
                             type="text"
-                            value={imageUrl}
+                            defaultValue={imageUrl}
                             name='photo'
                             placeholder="Provide a profile picture URL"
                             className="input input-bordered w-full py-3 px-4 border-[#b28b51] focus:outline-none focus:border-[#b28b51] rounded-sm"
@@ -121,8 +137,6 @@ export default function Register() {
                             <input
                                 type={showPassword ? "text" : "password"}
                                 name="password"
-                                value={password}
-                                onChange={handlePasswordChange}
                                 placeholder="Create a password"
                                 className="input input-bordered w-full py-3 px-4 border-[#b28b51] focus:outline-none focus:border-[#b28b51] rounded-sm"
                                 required
@@ -135,9 +149,6 @@ export default function Register() {
                                 {showPassword ? "Hide" : "Show"}
                             </button>
                         </div>
-                        {!isPasswordValid && (
-                            <p className="text-red-500 text-xs mt-1">Password must be at least 6 characters long</p>
-                        )}
                     </div>
                     <input type="file" ref={imageRef} placeholder="Enter photo URL" name='photo' onChange={handleFileUpload} className="hidden" required />
                     {/* Submit Button */}
@@ -145,7 +156,6 @@ export default function Register() {
                         <button
                             type="submit"
                             className="btn bg-[#b28b51] border-none text-white w-full py-3 rounded-sm"
-                            disabled={!isPasswordValid}
                         >
                             Register
                         </button>
