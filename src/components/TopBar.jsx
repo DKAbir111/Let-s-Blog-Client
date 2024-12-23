@@ -1,9 +1,12 @@
+import { useContext } from 'react';
 import logo from '../assets/letsblog.png'
 import { FaFacebook, FaInstagram, FaPinterest, FaSearch, FaTwitter } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { Link } from 'react-router-dom';
+import AuthContext from '../context/AuthContext';
 
 export default function TopBar() {
+    const { user, logOut } = useContext(AuthContext)
     return (
         <section className='py-2 md:py-5 px-2 bg-base-100'>
             <nav className='flex justify-between container mx-auto items-start'>
@@ -17,16 +20,26 @@ export default function TopBar() {
                     <img src={logo} alt="Blog Logo" className='w-1/4 md:w-1/3' />
                 </div>
                 <div className='flex items-center '>
-                    <div className="drawer drawer-end">
+                    <div className="drawer drawer-end font-lato">
                         <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
                         <div className="drawer-content">
                             {/* Page content here */}
                             <label htmlFor="my-drawer-4" className="flex gap-3 items-center cursor-pointer">
-                                <FaSearch />
-                                <GiHamburgerMenu className='text-3xl' />
+                                <FaSearch className='md:hidden' />
+                                <GiHamburgerMenu className='text-3xl md:hidden' />
+                                {
+                                    user?.email ?
+                                        <>
+                                            <button className='hidden md:block btn btn-active bg-[#b28b51] rounded-sm text-white' onClick={logOut}>Log out</button>
+                                        </> :
+                                        <>
+                                            <Link to={'/auth/login'}>  <button className='hidden md:block btn btn-active bg-[#b28b51] rounded-sm text-white'>Log in</button></Link>
+                                            <Link to={'/auth/register'}>  <button className='hidden md:block btn btn-ghost rounded-sm'>Register</button></Link>
+                                        </>
+                                }
                             </label>
                         </div>
-                        <div className="drawer-side">
+                        <div className="drawer-side z-10">
                             <label htmlFor="my-drawer-4" aria-label="close sidebar" className="drawer-overlay"></label>
                             <ul className="menu bg-base-200 text-base-content min-h-screen w-72 p-4">
                                 {/* Sidebar content here */}

@@ -107,7 +107,7 @@ const AddBlog = () => {
                 <div>
                     <button
                         type="submit"
-                        className="w-full btn btn-active hover:bg-black hover:text-white rounded-sm"
+                        className="w-full btn btn-active hover:bg-[#b28b51] hover:text-white rounded-sm"
                     >
                         Submit
                     </button>

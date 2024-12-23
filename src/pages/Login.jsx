@@ -108,7 +108,7 @@ export default function Login() {
                         className="btn bg-white border border-[#b28b51] text-[#b28b51] flex items-center w-full py-3 rounded-sm"
                         onClick={handleGoogleSignIn}
                     >
-                        <FcGoogle />
+                        <FcGoogle className='text-xl' />
                         Sign in with Google
                     </button>
                 </div>
