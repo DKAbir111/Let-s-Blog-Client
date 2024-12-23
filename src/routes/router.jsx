@@ -10,11 +10,13 @@ import AllBlogs from "../pages/AllBlogs/AllBlogs";
 import FeaturedBlog from "../pages/FeaturedBlog/FeaturedBlog";
 import WishList from "../pages/WishList/WishList";
 import PrivateRoutes from "./PrivateRoutes";
+import ErrorPage from "../pages/ErrorPage";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <Root />,
+        errorElement: <ErrorPage />,
         children: [
             {
                 path: "/",
@@ -26,7 +28,8 @@ const router = createBrowserRouter([
             },
             {
                 path: '/all-blog',
-                element: <AllBlogs />
+                element: <AllBlogs />,
+                loader: () => fetch('http://localhost:5001/api/blogs')
             },
             {
                 path: '/featured-blog',

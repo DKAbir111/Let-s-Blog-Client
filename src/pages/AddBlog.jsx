@@ -1,7 +1,10 @@
 import axios from "axios";
+import { useContext } from "react";
+import AuthContext from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 const AddBlog = () => {
-
+    const { user } = useContext(AuthContext)
     // List of categories for the dropdown
     const categories = ['Technology', 'Health', 'Travel', 'Education', 'Lifestyle'];
     const handleSubmit = (e) => {
@@ -12,12 +15,14 @@ const AddBlog = () => {
         const category = Form.category.value;
         const shortDescription = Form.shortDescription.value;
         const longDescription = Form.longDescription.value;
-        const newBlog = { title, imageUrl, category, shortDescription, longDescription };
-        console.log(newBlog);
+        const newBlog = { title, imageUrl, category, shortDescription, longDescription, email: user?.email };
         try {
             axios.post('http://localhost:5001/api/blog', newBlog)
                 .then(res => {
-                    console.log(res.data);
+                    if (res.data.insertedId) {
+                        toast.success('Blog added successfully');
+                        Form.reset();
+                    }
                 })
         }
         catch (error) {
