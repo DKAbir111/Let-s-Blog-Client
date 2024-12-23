@@ -11,14 +11,13 @@ export default function BlogDetails() {
   const [commentText, setCommentText] = useState("");
 
 
-  // Fetch comments for this blog
   useEffect(() => {
-    axios
-      .get(`/api/comments?blogId=${id}`)
-      .then((response) => setComments(response.data))
+    axios.get(`http://localhost:5001/api/comment/${id}`)
+      .then((response) => {
+        setComments(response.data);
+      })
       .catch((error) => console.error(error));
-  }, [id]);
-
+  }, [comments.length, id]);
   // Submit a new comment
   const handleCommentSubmit = () => {
     if (commentText.trim() === "") return;
@@ -31,7 +30,7 @@ export default function BlogDetails() {
     };
 
     axios
-      .post("/api/comments", newComment)
+      .post("http://localhost:5001/api/comment", newComment)
       .then((response) => {
         setComments((prev) => [...prev, response.data]);
         setCommentText("");
@@ -91,9 +90,10 @@ export default function BlogDetails() {
 
             {/* Render Comments */}
             <div className="mt-6 space-y-4">
+              <h2 className="italic font-semibold">Comments</h2>
               {Array.isArray(comments) && comments.length > 0 ? (
-                comments.map((comment) => (
-                  <div key={comment._id} className="border border-gray-200 p-4 rounded-lg flex gap-4">
+                comments.map((comment, index) => (
+                  <div key={index} className="border border-gray-200 p-2 rounded-lg flex gap-2">
                     <img
                       src={comment.userProfilePic}
                       alt="User Profile"
