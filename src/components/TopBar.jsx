@@ -30,7 +30,7 @@ export default function TopBar() {
                                 {
                                     user?.email ?
                                         <>
-                                            <span className='bg-[#b28b51] rounded-full p-1'><img src={user?.photoURL
+                                            <span className='hidden md:block bg-[#b28b51] rounded-full p-1'><img src={user?.photoURL
                                             } alt="Profile" className='h-10 w-10 rounded-full' /></span>
                                             <button className='hidden md:block btn btn-active bg-[#b28b51] rounded-sm text-white' onClick={logOut}>Log out</button>
                                         </> :
@@ -76,6 +76,19 @@ export default function TopBar() {
                                     </>
                                 }
 
+                                <div className='mt-5 flex justify-center'>
+                                    {
+                                        user?.email ?
+                                            <>
+
+                                                <button className='btn btn-active bg-[#b28b51] rounded-sm text-white' onClick={logOut}>Log out</button>
+                                            </> :
+                                            <>
+                                                <Link to={'/auth/login'}>  <button className='btn btn-active bg-[#b28b51] rounded-sm text-white'>Log in</button></Link>
+                                                <Link to={'/auth/register'}>  <button className='btn btn-ghost rounded-sm border-[#b28b51] ml-3'>Register</button></Link>
+                                            </>
+                                    }
+                                </div>
                                 <div className='flex gap-3 mt-7 justify-center opacity-55'>
                                     <a href=""> <FaFacebook /></a>
                                     <a href=""> <FaTwitter /></a>
