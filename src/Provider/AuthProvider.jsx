@@ -7,33 +7,38 @@ export default function AuthProvider({ children }) {
 
     // state observer
     const [user, setUser] = useState(null)
+    const [loading, setLoading] = useState(true)
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, currentUser => {
             setUser(currentUser);
             console.log(currentUser)
+            setLoading(false)
         })
         return () => unsubscribe();
     }, [])
 
     // create new user
     const createUser = (email, password) => {
-
+        setLoading(true)
         return createUserWithEmailAndPassword(auth, email, password);
     }
 
     // log in existing user
     const loginUser = (email, password) => {
+        setLoading(true)
         return signInWithEmailAndPassword(auth, email, password);
     }
 
     //sign in with google
     const googleSignin = () => {
+        setLoading(true)
         const provider = new GoogleAuthProvider();
         return signInWithPopup(auth, provider)
     }
 
     //logout
     const logOut = () => {
+        setLoading(true)
         return signOut(auth)
     }
 
@@ -43,6 +48,7 @@ export default function AuthProvider({ children }) {
         user,
         googleSignin,
         logOut,
+        loading
     }
     return (
 

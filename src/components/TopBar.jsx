@@ -30,6 +30,8 @@ export default function TopBar() {
                                 {
                                     user?.email ?
                                         <>
+                                            <span className='bg-[#b28b51] rounded-full p-1'><img src={user?.photoURL
+                                            } alt="Profile" className='h-10 w-10 rounded-full' /></span>
                                             <button className='hidden md:block btn btn-active bg-[#b28b51] rounded-sm text-white' onClick={logOut}>Log out</button>
                                         </> :
                                         <>
@@ -64,8 +66,16 @@ export default function TopBar() {
                                 {
                                     user?.email && <>
                                         <li><NavLink to={'/add-blog'}>Add Blog</NavLink>  </li>
-                                        <li><NavLink to={'/wish-list'}>Wishlist</NavLink>  </li></>
+                                        <li><NavLink to={'/wish-list'}>Wishlist</NavLink>  </li>
+                                        <div className='mt-5 flex flex-col items-center'>
+                                            <h4 className='text-center font-semibold mb-5'>About me</h4>
+                                            <img src={user?.photoURL} alt="User" className='h-24 w-24 rounded-full mb-2' />
+                                            <p className='mb-1 text-gray-500'>{user?.displayName}</p>
+                                            <p className='text-gray-500 text-sm'>Email: {user?.email}</p>
+                                        </div>
+                                    </>
                                 }
+
                                 <div className='flex gap-3 mt-7 justify-center opacity-55'>
                                     <a href=""> <FaFacebook /></a>
                                     <a href=""> <FaTwitter /></a>
