@@ -3,6 +3,8 @@ import AuthContext from "../context/AuthContext";
 import PropTypes from 'prop-types'
 import auth from "../Firebase/Firebase.init";
 import { useEffect, useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 export default function AuthProvider({ children }) {
 
     // state observer
@@ -40,14 +42,26 @@ export default function AuthProvider({ children }) {
         setLoading(true)
         return signOut(auth)
     }
-
+    const addWishList = (id, email) => {
+        axios.post('http://localhost:5001/api/wishlist', { blogId: id, email: email })
+            .then(res => {
+                if (res.data.insertedId) {
+                    toast.success('Successfully add to wishlist')
+                }
+            })
+            .catch(err => {
+                toast.error('Failed to add to wishlist')
+                console.error(err)
+            })
+    }
     const authInfo = {
         createUser,
         loginUser,
         user,
         googleSignin,
         logOut,
-        loading
+        loading,
+        addWishList
     }
     return (
 

@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import AuthContext from "../../context/AuthContext";
 
 const FeaturedBlog = () => {
     const [blogs, setBlogs] = useState([]);
     const [loading, setLoading] = useState(true);
+    const { addWishList, user } = useContext(AuthContext)
 
     useEffect(() => {
         fetch("http://localhost:5001/api/top-posts")
@@ -15,6 +17,7 @@ const FeaturedBlog = () => {
             })
             .catch((error) => {
                 toast.error("Error fetching top posts");
+                console.log(error);
                 setLoading(false);
             });
     }, []);
@@ -47,6 +50,7 @@ const FeaturedBlog = () => {
                                 <td className="px-6 py-4 flex">
                                     <Link
                                         className="btn btn-sm rounded-sm bg-[#b28b51] text-white"
+                                        to={`/blog/${blog._id}`}
 
                                     >
                                         Details
@@ -54,7 +58,9 @@ const FeaturedBlog = () => {
                                     <button
                                         className="btn btn-sm rounded-sm ml-2 border-2 border-[#b28b51] hover:bg-[#b28b51] hover:border-[#b28b51] hover:text-white"
                                         onClick={() => {
-                                            // Handle wishlist functionality here
+                                            user?.email ?
+                                                addWishList(blog?._id, user?.email) :
+                                                toast.error('Please login to add to wishlist')
                                         }}
                                     >
                                         Wishlist

@@ -1,11 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "aos/dist/aos.css";
 import AOS from "aos";
+import AuthContext from "../../context/AuthContext";
+import { toast } from "react-toastify";
 
 const RecentBlogs = () => {
     const [blogs, setBlogs] = useState([]);
+    const { user, addWishList } = useContext(AuthContext)
 
     useEffect(() => {
         AOS.init();
@@ -55,7 +58,12 @@ const RecentBlogs = () => {
                                     {/* Wishlist Button */}
                                     <button
                                         className="btn btn-sm rounded-sm bg-[#b28b51] text-white hover:bg-yellow-700"
-                                        onClick={() => handleAddToWishlist(blog._id)}
+                                        onClick={() => {
+                                            user?.email ?
+                                                addWishList(blog?._id, user?.email) :
+                                                toast.error('Please login to add to wishlist')
+
+                                        }}
                                     >
                                         Add to Wishlist
                                     </button>
@@ -67,12 +75,6 @@ const RecentBlogs = () => {
             </div>
         </section>
     );
-};
-
-const handleAddToWishlist = (blogId) => {
-    // Logic to add the blog to the user's wishlist
-    console.log(`Added blog with ID ${blogId} to wishlist.`);
-    // This can be an API call to add the blog to the wishlist in the database
 };
 
 export default RecentBlogs;
