@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import logo from '../assets/letsblog.png'
 import { FaFacebook, FaInstagram, FaPinterest, FaSearch, FaTwitter } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 
 export default function TopBar() {
@@ -58,11 +58,14 @@ export default function TopBar() {
                                         </svg>
                                     </label>
                                 </div>
-                                <li><Link>Home</Link>  </li>
-                                <li><Link>Add Blog</Link>  </li>
-                                <li><Link>All blogs</Link>  </li>
-                                <li><Link> Featured Blogs</Link>  </li>
-                                <li><Link>Wishlist</Link>  </li>
+                                <li><Link to={'/'}>Home</Link>  </li>
+                                <li><NavLink to={'/all-blog'}>All blogs</NavLink>  </li>
+                                <li><NavLink to={'/featured-blog'}> Featured Blogs</NavLink>  </li>
+                                {
+                                    user?.email && <>
+                                        <li><NavLink to={'/add-blog'}>Add Blog</NavLink>  </li>
+                                        <li><NavLink to={'/wish-list'}>Wishlist</NavLink>  </li></>
+                                }
                                 <div className='flex gap-3 mt-7 justify-center opacity-55'>
                                     <a href=""> <FaFacebook /></a>
                                     <a href=""> <FaTwitter /></a>
