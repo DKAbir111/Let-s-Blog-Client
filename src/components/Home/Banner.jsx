@@ -1,41 +1,83 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
+import "aos/dist/aos.css";
+import AOS from "aos"
 
 const Banner = () => {
     const [blogs, setBlogs] = useState([]);
     useEffect(() => {
-        axios.get('http://localhost:5001/api/random-blogs')
-            .then(res => {
-                setBlogs(res.data);
-            })
-    }, [])
+        AOS.init();
+    }, []);
+    useEffect(() => {
+        const data = [
+            {
+                imageUrl: "https://i.ibb.co.com/RgTwT3n/education.jpg",
+                title: "Education for All",
+                shortDescription:
+                    "Explore the world of education, where knowledge empowers individuals to build a better future.",
+            },
+            {
+                imageUrl: "https://i.ibb.co.com/pZnXvcX/health.webp",
+                title: "Health and Wellness",
+                shortDescription:
+                    "Discover tips, resources, and insights on living a healthy and balanced lifestyle.",
+            },
+            {
+                imageUrl: "https://i.ibb.co.com/vkL4pKd/technology.jpg",
+                title: "Advancing Technology",
+                shortDescription:
+                    "Stay updated with the latest trends in technology, from innovations to breakthroughs shaping the future.",
+            },
+            {
+                imageUrl: "https://i.ibb.co.com/mDwCBDm/travel.jpg",
+                title: "World Travel Adventures",
+                shortDescription:
+                    "Embark on a journey to explore beautiful destinations, cultures, and unforgettable experiences.",
+            },
+        ];
+
+        setBlogs(data);
+    }, []);
+
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 5000,
+        arrows: true,
+    };
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-6">
-            {blogs.map((blog, index) => (
-                <div
-                    key={index}
-                    className="relative group rounded-sm overflow-hidden shadow-sm"
-                >
-                    {/* Image */}
-                    <img
-                        src={blog.imageUrl}
-                        alt={blog.title}
-                        className="w-full h-96 object-cover transition-all duration-300 ease-in-out group-hover:scale-110"
-                    />
-                    {/* Overlay */}
-                    <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-end p-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
-                        <p className="text-sm font-bold">{blog.category}</p>
-                        <h3 className="text-lg font-semibold">{blog.title}</h3>
-                        <p className="text-xs">{blog.shortDescription}</p>
+        <div className="relative">
+            {/* React Slick Slider with single image at a time */}
+            <Slider {...settings}>
+                {blogs.map((blog, index) => (
+                    <div
+                        key={index}
+                        className="relative overflow-hidden"
+                    >
+                        {/* Image */}
+                        <img
+                            src={blog.imageUrl}
+                            alt={blog.title}
+                            className="w-full h-96 object-cover"
+                        />
+                        {/* Blog Info Overlay */}
+                        <div className="absolute  bg-black bg-opacity-60  flex flex-col justify-center items-center text-white h-full w-full top-0">
+                            <h3 className="text-2xl font-semibold mb-3 font-lustria" data-aos="fade-down">{blog.title}</h3>
+                            <p className="text-sm mb-4 font-lato">{blog.shortDescription}</p>
+                            <Link to={'/all-blog'} className="btn rounded-sm bg-[#b28b51] border-none text-white" data-aos="fade-up">Explore More</Link>
 
-                        <div className="mt-2">
-                            <Link className="btn btn-sm rounded-sm bg-[#b28b51] border-none text-white">Read More</Link>
                         </div>
                     </div>
-                </div>
-            ))}
+                ))}
+            </Slider>
         </div>
     );
 };
