@@ -71,7 +71,7 @@ const Banner = () => {
                         {/* Blog Info Overlay */}
                         <div className="absolute  bg-black bg-opacity-60  flex flex-col justify-center items-center text-white h-full w-full top-0">
                             <h3 className="text-2xl font-semibold mb-3 font-lustria" data-aos="fade-down">{blog.title}</h3>
-                            <p className="text-sm mb-4 font-lato">{blog.shortDescription}</p>
+                            <p className="text-sm mb-4 font-lato text-center">{blog.shortDescription}</p>
                             <Link to={'/all-blog'} className="btn rounded-sm bg-[#b28b51] border-none text-white" data-aos="fade-up">Explore More</Link>
 
                         </div>
