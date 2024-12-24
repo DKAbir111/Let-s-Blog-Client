@@ -2,8 +2,12 @@ import { Link } from "react-router-dom";
 import { FaBookOpenReader } from "react-icons/fa6";
 import { FaHeart } from "react-icons/fa";
 import PropTypes from "prop-types";
+import { useContext } from "react";
+import AuthContext from "../../context/AuthContext";
+import { toast } from "react-toastify";
 
 export default function Blog({ blog }) {
+    const { addWishList, user } = useContext(AuthContext)
     const { imageUrl, title, shortDescription, category } = blog;
     return (
         <div className="bg-white rounded-sm shadow-lg overflow-hidden font-lato">
@@ -26,6 +30,11 @@ export default function Blog({ blog }) {
                         <FaBookOpenReader /> Read More
                     </Link>
                     <button
+                        onClick={() => {
+                            user?.email ?
+                                addWishList(blog?._id, user?.email) :
+                                toast.error('Please login to add to wishlist')
+                        }}
                         type="button"
                         className="text-sm text-[#b28b51] hover:text-black flex items-center gap-1"
                     >
