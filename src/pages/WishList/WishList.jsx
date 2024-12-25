@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import AuthContext from "../../context/AuthContext";
+import axios from "axios";
 
 const WishlistPage = () => {
     const [wishlist, setWishlist] = useState([]);
@@ -23,24 +24,21 @@ const WishlistPage = () => {
                 });
         }
     }, [user?.email]);
+    console.log(wishlist);
 
-    const handleRemoveWishlist = (blogId) => {
-        fetch(`http://localhost:5001/api/wishlist/${blogId}`, {
-            method: "DELETE",
-            headers: { "Content-Type": "application/json" },
-        })
-            .then((response) => {
-                if (response.ok) {
-                    toast.success("Removed from wishlist!");
-                    setWishlist((prev) => prev.filter((item) => item._id !== blogId));
-                } else {
-                    toast.error("Failed to remove from wishlist");
+    const handleRemoveWishlist = (wishId) => {
+        axios.delete(`http://localhost:5001/api/wishlist/${wishId}`)
+            .then(res => {
+                if (res.data.deletedCount > 0 && res.data.acknowledged === true) {
+                    toast.success("Blog removed from wishlist");
+                    const existingWishlist = wishlist.filter(wish => wish.wishId !== wishId)
+                    setWishlist(existingWishlist);
+                }
+                else {
+                    toast.error("Error deleting wishlist");
                 }
             })
-            .catch((error) => {
-                toast.error("Error removing from wishlist");
-                console.log(error);
-            });
+
     };
 
     if (loading) {
@@ -78,7 +76,7 @@ const WishlistPage = () => {
                                 </Link>
                                 <button
                                     className="btn btn-sm border-2 border-[#b28b51] text-[#b28b51] px-4 py-2 hover:bg-[#b28b51] hover:text-white"
-                                    onClick={() => handleRemoveWishlist(blog._id)}
+                                    onClick={() => handleRemoveWishlist(blog.wishId)}
                                 >
                                     Remove
                                 </button>
