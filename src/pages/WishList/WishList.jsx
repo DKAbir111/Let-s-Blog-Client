@@ -28,7 +28,12 @@ const WishlistPage = () => {
 
 
     const handleRemoveWishlist = (wishId) => {
-        axios.delete(`http://localhost:5001/api/wishlist/${wishId}`)
+        axios.delete(`http://localhost:5001/api/wishlist/${wishId}`,
+            {
+                data: { email: user.email },
+                withCredentials: true,
+            }
+        )
             .then(res => {
                 if (res.data.deletedCount > 0 && res.data.acknowledged === true) {
                     toast.success("Blog removed from wishlist");
