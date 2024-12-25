@@ -14,7 +14,7 @@ export default function TrendingBlogs() {
     }, []);
 
     return (
-        <div className="my-12 container mx-auto">
+        <div className="my-12 container mx-auto font-lato">
             <h3 className="text-3xl text-center text-[#b28b51] font-lustria font-semibold mb-6">
                 Trending Blogs
             </h3>

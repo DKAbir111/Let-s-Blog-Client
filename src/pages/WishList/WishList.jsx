@@ -48,7 +48,9 @@ const WishlistPage = () => {
     };
 
     if (loading) {
-        return <div className="text-center mt-20 text-lg text-gray-600">Loading...</div>;
+        return <div className="flex justify-center items-center col-span-3 text-[#b28b51]">
+            <span className="loading loading-bars loading-md"></span>
+        </div>
     }
 
     return (

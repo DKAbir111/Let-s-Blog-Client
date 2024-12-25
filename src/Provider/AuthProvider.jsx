@@ -19,10 +19,21 @@ export default function AuthProvider({ children }) {
                     withCredentials: true,
                 })
                     .then(res => {
-                        console.log(res.data)
+
+                        if (res.data) {
+                            setLoading(false);
+                        }
+                    })
+            }
+
+            else {
+                axios.post('http://localhost:5001/logout', {}, {
+                    withCredentials: true
+                })
+                    .then(res => {
+                        console.log('logout', res.data);
                         setLoading(false);
                     })
-
             }
             setLoading(false)
         })

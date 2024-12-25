@@ -80,7 +80,6 @@ export default function Register() {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log('Image uploaded successfully:', data);
                 setPhoto(data.data.display_url);
             })
             .catch((err) => {

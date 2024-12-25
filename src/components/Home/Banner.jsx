@@ -57,7 +57,7 @@ const Banner = () => {
     };
 
     return (
-        <div className="relative">
+        <div className="relative overflow-hidden">
 
             <Slider {...settings}>
                 {blogs.map((blog, index) => (

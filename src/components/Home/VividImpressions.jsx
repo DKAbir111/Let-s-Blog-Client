@@ -1,21 +1,20 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion"; // Import Framer Motion for animation
+import { motion } from "framer-motion";
 
 const VividImpressions = () => {
     const [commentData, setCommentData] = useState([]);
-    const [loading, setLoading] = useState(true); // State for loading
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         axios.get('http://localhost:5001/api/comments/random')
             .then(res => {
                 setCommentData(res.data);
-                setLoading(false); // Stop loading when data is fetched
+                setLoading(false);
             })
             .catch(err => console.error(err));
     }, []);
 
-    console.log(commentData);
 
     return (
         <section className="bg-gray-100 py-12 px-6 font-lato">
@@ -25,7 +24,9 @@ const VividImpressions = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:gap-28 md:gap-16 gap-7">
                     {loading ? (
 
-                        <div className="w-full h-72 bg-gray-300 animate-pulse rounded-md" />
+                        <div className="flex justify-center items-center col-span-3 text-[#b28b51]">
+                            <span className="loading loading-bars loading-md"></span>
+                        </div>
                     ) : (
                         commentData.map((comment) => (
                             <motion.div

@@ -85,7 +85,9 @@ const FeaturedBlog = () => {
 
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <div className="flex justify-center items-center col-span-3 text-[#b28b51]">
+            <span className="loading loading-bars loading-md"></span>
+        </div>
     }
 
     return (
