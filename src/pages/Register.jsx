@@ -1,38 +1,15 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useRef, useState } from 'react';
-import { FaFileUpload } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import AuthContext from '../context/AuthContext';
 import { updateProfile } from 'firebase/auth';
 import auth from '../Firebase/Firebase.init';
+import { MdFileUpload } from 'react-icons/md';
 
 export default function Register() {
     const { createUser } = useContext(AuthContext)
-    const imageRef = useRef(null)
     const navigate = useNavigate()
-    const [imageUrl, setImageURl] = useState('')
-    const handleFileUpload = (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
-        const formData = new FormData();
-        formData.append('image', file)
-        try {
-            fetch('https://api.imgbb.com/1/upload?key=5c73e82c6c39c531a41a2361f2681168', {
-                method: 'POST',
-                body: formData
-
-            }).then(res => res.json())
-                .then(data => {
-                    setImageURl(data.data.
-                        display_url)
-
-                })
-
-        } catch (err) {
-            console.error(err);
-            return;
-        }
-    }
+    const [photo, setPhoto] = useState('')
     // State to manage password visibility and validation
     const [showPassword, setShowPassword] = useState(false);
     // Toggle password visibility
@@ -54,28 +31,30 @@ export default function Register() {
         return null;
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const username = e.target.name.value;
-        const email = e.target.email.value;
-        const password = e.target.password.value;
+
+    const handleRegister = (event) => {
+        event.preventDefault();
+        const name = event.target.name.value;
+        const email = event.target.email.value;
+        const photo = event.target.photo.value;
+        const password = event.target.password.value;
+
+
         const validationError = validatePassword(password);
         if (validationError) {
             toast.error(validationError);
             return;
         }
-        const newUser = { username, email, password, photo: imageUrl };
-        console.log(newUser);
 
         createUser(email, password)
             .then((result) => {
                 if (result) {
                     updateProfile(auth.currentUser, {
-                        displayName: username,
-                        photoURL: imageUrl,
+                        displayName: name,
+                        photoURL: photo,
                     });
                     toast.success("Account created successfully!");
-                    e.target.reset();
+                    event.target.reset();
                     navigate('/')
                 }
             })
@@ -84,6 +63,33 @@ export default function Register() {
             });
     };
 
+    const ImageRef = useRef(null)
+
+    const handlePhotoUpload = (e) => {
+        const photo = e.target.files[0];
+        if (!photo) return;
+        const formData = new FormData();
+        formData.append('image', photo);
+
+        fetch('https://api.imgbb.com/1/upload?key=5c73e82c6c39c531a41a2361f2681168', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json',
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log('Image uploaded successfully:', data);
+                setPhoto(data.data.display_url);
+            })
+            .catch((err) => {
+                console.error('Error uploading image:', err);
+                toast.error('Image upload failed');
+            });
+    };
+
+
     return (
         <div className="bg-[#f9f9f9] min-h-screen flex justify-center items-center font-lato">
             <div className="card bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
@@ -91,7 +97,7 @@ export default function Register() {
                     Register
                 </h2>
 
-                <form className="space-y-6" onSubmit={handleSubmit}>
+                <form className="space-y-6" onSubmit={handleRegister}>
                     {/* Name Input */}
                     <div className="form-control">
                         <label className="label text-sm font-semibold text-[#b28b51]">Full Name</label>
@@ -121,13 +127,14 @@ export default function Register() {
                         <label className="label text-sm font-semibold text-[#b28b51]">Profile Picture URL</label>
                         <input
                             type="text"
-                            defaultValue={imageUrl}
+                            defaultValue={photo}
                             name='photo'
                             placeholder="Provide a profile picture URL"
                             className="input input-bordered w-full py-3 px-4 border-[#b28b51] focus:outline-none focus:border-[#b28b51] rounded-sm"
                             required
                         />
-                        <div className='absolute right-0 btn text-xl btn-ghost top-9 rounded-sm' onClick={() => imageRef.current.click()}><FaFileUpload /> </div>
+                        <input type="file" className='hidden' name='file' ref={ImageRef} onChange={handlePhotoUpload} />
+                        <span onClick={() => ImageRef.current.click()} className='btn btn-sm absolute bg-white shadow-none  border-none right-1 top-11'><MdFileUpload /></span>
                     </div>
 
                     {/* Password Input */}
@@ -150,7 +157,6 @@ export default function Register() {
                             </button>
                         </div>
                     </div>
-                    <input type="file" ref={imageRef} placeholder="Enter photo URL" name='photo' onChange={handleFileUpload} className="hidden" required />
                     {/* Submit Button */}
                     <div className="form-control mt-6">
                         <button

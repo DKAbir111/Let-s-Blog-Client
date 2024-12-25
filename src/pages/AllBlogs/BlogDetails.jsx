@@ -1,24 +1,27 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams, Link, useLoaderData } from "react-router-dom";
+import { useParams, Link, useLoaderData, useNavigate } from "react-router-dom";
 import axios from "axios";
 import AuthContext from "../../context/AuthContext";
+import { FaArrowLeft } from "react-icons/fa";
 
 export default function BlogDetails() {
-  const { user } = useContext(AuthContext)
+  const { user } = useContext(AuthContext);
   const { id } = useParams();
-  const blog = useLoaderData()
+  const blog = useLoaderData();
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
-
+  const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`http://localhost:5001/api/comment/${id}`)
+    axios
+      .get(`http://localhost:5001/api/comment/${id}`)
       .then((response) => {
         setComments(response.data);
       })
       .catch((error) => console.error(error));
   }, [comments.length, id]);
-  // Submit a new comment
+
+
   const handleCommentSubmit = () => {
     if (commentText.trim() === "") return;
 
@@ -38,14 +41,22 @@ export default function BlogDetails() {
       .catch((error) => console.error(error));
   };
 
-  // Conditional rendering for textarea and update button
+
   const isOwner = user?.email && blog?.email === user.email;
 
   return (
     <div className="max-w-4xl mx-auto p-4">
       {blog && (
         <div>
-          {/* Blog Header */}
+
+          <button
+            onClick={() => navigate(-1)}
+            className="bg-[#b28b51] text-white py-2 px-4 hover:bg-[#8d6c42] mb-4 rounded-sm"
+          >
+            <FaArrowLeft className="inline-block" /> Go Back
+          </button>
+
+
           <img
             src={blog.imageUrl}
             alt="Blog Image"
@@ -56,7 +67,7 @@ export default function BlogDetails() {
           <p className="text-gray-600 mt-4">{blog.shortDescription}</p>
           <p className="text-gray-600 mt-4">{blog.longDescription}</p>
 
-          {/* Conditional Update Button */}
+
           {isOwner && (
             <Link
               to={`/update-blog/${id}`}
@@ -66,7 +77,7 @@ export default function BlogDetails() {
             </Link>
           )}
 
-          {/* Comments Section */}
+
           <div className="mt-8">
             <h2 className="text-xl font-semibold mb-4">Comments</h2>
             {isOwner ? (
@@ -74,13 +85,13 @@ export default function BlogDetails() {
             ) : (
               <div>
                 <textarea
-                  className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#b28b51]"
+                  className="w-full border border-gray-300 p-2 rounded-sm focus:outline-none focus:ring-2 focus:ring-[#b28b51]"
                   placeholder="Write a comment..."
                   value={commentText}
                   onChange={(e) => setCommentText(e.target.value)}
                 />
                 <button
-                  className="bg-[#b28b51] text-white py-2 px-4 mt-2 rounded-lg hover:bg-[#8d6c42]"
+                  className="bg-[#b28b51] text-white py-2 px-4 mt-2  hover:bg-[#8d6c42] rounded-sm"
                   onClick={handleCommentSubmit}
                 >
                   Submit Comment
@@ -88,7 +99,7 @@ export default function BlogDetails() {
               </div>
             )}
 
-            {/* Render Comments */}
+
             <div className="mt-6 space-y-4">
               <h2 className="italic font-semibold">Comments</h2>
               {Array.isArray(comments) && comments.length > 0 ? (
