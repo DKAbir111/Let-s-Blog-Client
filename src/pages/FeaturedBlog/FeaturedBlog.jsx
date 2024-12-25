@@ -2,12 +2,14 @@ import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import AuthContext from "../../context/AuthContext";
+import DataTable from "react-data-table-component";
 
 const FeaturedBlog = () => {
     const [blogs, setBlogs] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { addWishList, user } = useContext(AuthContext)
+    const { addWishList, user } = useContext(AuthContext);
 
+    // Fetch blog data
     useEffect(() => {
         fetch("http://localhost:5001/api/top-posts")
             .then((response) => response.json())
@@ -22,54 +24,103 @@ const FeaturedBlog = () => {
             });
     }, []);
 
+
+    const columns = [
+        {
+            name: 'Title',
+            selector: row => row.title,
+            sortable: true,
+            cell: row => (
+                <span className="text-gray-800 font-semibold">{row.title}</span>
+            ),
+        },
+        {
+            name: 'Category',
+            selector: row => row.category,
+            sortable: true,
+            cell: row => (
+                <span className="text-gray-600">{row.category}</span>
+            ),
+        },
+        {
+            name: 'Short Description',
+            selector: row => row.shortDescription,
+            sortable: true,
+            cell: row => (
+                <span className="text-gray-700">{row.shortDescription}</span>
+            ),
+        },
+        {
+            name: 'Word Count',
+            selector: row => row.wordCount,
+            sortable: true,
+            cell: row => (
+                <span className="text-gray-600">{row.wordCount}</span>
+            ),
+        },
+        {
+            name: 'Action',
+            cell: row => (
+                <div className="flex space-x-2">
+                    <Link
+                        className="btn btn-sm rounded-sm bg-[#b28b51] text-white py-2 px-4"
+                        to={`/blog/${row._id}`}
+                    >
+                        Details
+                    </Link>
+                    <button
+                        className="btn btn-sm rounded-sm border-2 border-[#b28b51] text-[#b28b51] py-2 px-4 hover:bg-[#b28b51] hover:text-white hover:border-[#b28b51]"
+                        onClick={() => {
+                            user?.email ?
+                                addWishList(row._id, user?.email) :
+                                toast.error('Please login to add to wishlist');
+                        }}
+                    >
+                        Wishlist
+                    </button>
+                </div>
+            ),
+        }
+    ];
+
+
     if (loading) {
         return <div>Loading...</div>;
     }
 
     return (
         <div className="container mx-auto p-6">
-            <h1 className="text-3xl font-semibold mb-8 text-center font-lustria">Featured Blogs</h1>
+            <h1 className="text-3xl font-semibold mb-8 text-center text-gray-900 font-lustria">Featured Blogs</h1>
             <div className="overflow-x-auto">
-                <table className="min-w-full table-auto bg-white shadow-lg rounded-lg font-lato">
-                    <thead className="bg-[#b28b51] text-white">
-                        <tr>
-                            <th className="px-6 py-3 text-left">Title</th>
-                            <th className="px-6 py-3 text-left">Category</th>
-                            <th className="px-6 py-3 text-left">Short Description</th>
-                            <th className="px-6 py-3 text-left">Word Count</th>
-                            <th className="px-6 py-3 text-left">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {blogs.map((blog) => (
-                            <tr key={blog._id} className="border-b hover:bg-gray-100">
-                                <td className="px-6 py-4">{blog.title}</td>
-                                <td className="px-6 py-4">{blog.category}</td>
-                                <td className="px-6 py-4">{blog.shortDescription}</td>
-                                <td className="px-6 py-4">{blog.wordCount}</td>
-                                <td className="px-6 py-4 flex">
-                                    <Link
-                                        className="btn btn-sm rounded-sm bg-[#b28b51] text-white"
-                                        to={`/blog/${blog._id}`}
+                <DataTable
+                    columns={columns}
+                    data={blogs}
+                    pagination
+                    highlightOnHover
+                    responsive
 
-                                    >
-                                        Details
-                                    </Link>
-                                    <button
-                                        className="btn btn-sm rounded-sm ml-2 border-2 border-[#b28b51] hover:bg-[#b28b51] hover:border-[#b28b51] hover:text-white"
-                                        onClick={() => {
-                                            user?.email ?
-                                                addWishList(blog?._id, user?.email) :
-                                                toast.error('Please login to add to wishlist')
-                                        }}
-                                    >
-                                        Wishlist
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                    customStyles={{
+                        headCells: {
+                            style: {
+                                backgroundColor: '#b28b51',
+                                color: 'white',
+                                fontWeight: 'bold',
+                                padding: '12px',
+                            }
+                        },
+                        cells: {
+                            style: {
+                                padding: '12px',
+                            }
+                        },
+                        rows: {
+                            style: {
+                                padding: '12px',
+                                borderBottom: '1px solid #e5e7eb',
+                            }
+                        }
+                    }}
+                />
             </div>
         </div>
     );
