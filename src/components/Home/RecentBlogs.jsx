@@ -63,6 +63,7 @@ const RecentBlogs = () => {
                                                 addWishList(blog?._id, user?.email) :
                                                 toast.error('Please login to add to wishlist')
 
+
                                         }}
                                     >
                                         Add to Wishlist

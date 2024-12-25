@@ -11,10 +11,11 @@ const WishlistPage = () => {
 
     useEffect(() => {
         if (user?.email) {
-            fetch(`http://localhost:5001/api/wishlist?email=${user.email}`)
-                .then((response) => response.json())
-                .then((data) => {
-                    setWishlist(data);
+            axios.get(`http://localhost:5001/api/wishlist?email=${user.email}`, {
+                withCredentials: true,
+            })
+                .then((res) => {
+                    setWishlist(res.data);
                     setLoading(false);
                 })
                 .catch((error) => {
