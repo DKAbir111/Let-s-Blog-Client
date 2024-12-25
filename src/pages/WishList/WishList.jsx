@@ -24,7 +24,7 @@ const WishlistPage = () => {
                 });
         }
     }, [user?.email]);
-    console.log(wishlist);
+
 
     const handleRemoveWishlist = (wishId) => {
         axios.delete(`http://localhost:5001/api/wishlist/${wishId}`)
@@ -51,7 +51,7 @@ const WishlistPage = () => {
                 My Wishlist
             </h1>
             <div className="space-y-6">
-                {wishlist.map((blog) => (
+                {wishlist.length > 0 ? (wishlist.map((blog) => (
                     <div
                         key={blog._id}
                         className="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col md:flex-row"
@@ -83,7 +83,11 @@ const WishlistPage = () => {
                             </div>
                         </div>
                     </div>
-                ))}
+                ))) :
+                    <div>
+                        <h2 className="text-lg text-center text-[#b28b51] font-lustria">No wishlist added yet! </h2>
+                    </div>
+                }
             </div>
         </div>
     );
