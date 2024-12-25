@@ -5,10 +5,11 @@ import "aos/dist/aos.css";
 import AOS from "aos";
 import AuthContext from "../../context/AuthContext";
 import { toast } from "react-toastify";
+import { motion } from "framer-motion";  // Import framer-motion
 
 const RecentBlogs = () => {
     const [blogs, setBlogs] = useState([]);
-    const { user, addWishList } = useContext(AuthContext)
+    const { user, addWishList } = useContext(AuthContext);
 
     useEffect(() => {
         AOS.init();
@@ -33,7 +34,7 @@ const RecentBlogs = () => {
                     {blogs.map((blog, index) => (
                         <div
                             key={index}
-                            className="bg-white rounded-sm shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105"
+                            className="bg-white rounded-sm shadow-lg overflow-hidden transform transition-transform duration-300"
                             data-aos="flip-left"
                         >
                             <img
@@ -43,7 +44,23 @@ const RecentBlogs = () => {
                             />
                             {/* Blog Content */}
                             <div className="p-6">
-                                <p className="text-sm font-bold text-gray-600">{blog.category}</p>
+
+                                <motion.p
+                                    className="text-sm font-bold"
+                                    animate={{
+                                        scale: [1, 1.1, 1],
+                                        opacity: [1, 0.8, 1],
+                                        color: ["#000000", "#b28b51", "#000000"],
+                                    }}
+                                    transition={{
+                                        duration: 1.5,
+                                        repeat: Infinity,
+                                        repeatType: "loop",
+                                        ease: "easeInOut",
+                                    }}
+                                >
+                                    {blog.category}
+                                </motion.p>
                                 <h3 className="text-xl font-semibold text-gray-800 mt-2 mb-4">{blog.title}</h3>
                                 <p className="text-gray-600 mb-4">{blog.shortDescription}</p>
                                 {/* Action Buttons */}
@@ -62,8 +79,6 @@ const RecentBlogs = () => {
                                             user?.email ?
                                                 addWishList(blog?._id, user?.email) :
                                                 toast.error('Please login to add to wishlist')
-
-
                                         }}
                                     >
                                         Add to Wishlist

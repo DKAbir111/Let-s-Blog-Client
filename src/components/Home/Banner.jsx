@@ -1,16 +1,19 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import "aos/dist/aos.css";
-import AOS from "aos"
+import AOS from "aos";
 
 const Banner = () => {
     const [blogs, setBlogs] = useState([]);
+
     useEffect(() => {
         AOS.init();
     }, []);
+
     useEffect(() => {
         const data = [
             {
@@ -55,25 +58,37 @@ const Banner = () => {
 
     return (
         <div className="relative">
-            {/* React Slick Slider with single image at a time */}
+
             <Slider {...settings}>
                 {blogs.map((blog, index) => (
                     <div
                         key={index}
                         className="relative overflow-hidden"
                     >
-                        {/* Image */}
+
                         <img
                             src={blog.imageUrl}
                             alt={blog.title}
                             className="w-full h-96 object-cover"
                         />
-                        {/* Blog Info Overlay */}
-                        <div className="absolute  bg-black bg-opacity-60  flex flex-col justify-center items-center text-white h-full w-full top-0">
+
+                        <div className="absolute bg-black bg-opacity-60 flex flex-col justify-center items-center text-white h-full w-full top-0">
                             <h3 className="text-2xl font-semibold mb-3 font-lustria" data-aos="fade-down">{blog.title}</h3>
                             <p className="text-sm mb-4 font-lato text-center">{blog.shortDescription}</p>
-                            <Link to={'/all-blog'} className="btn rounded-sm bg-[#b28b51] border-none text-white" data-aos="fade-up">Explore More</Link>
 
+                            <motion.div
+                                initial={{ scale: 1 }}
+                                animate={{ scale: [1, 1.1, 1] }}
+                                transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+                            >
+                                <Link
+                                    to="/all-blog"
+                                    className="btn rounded-sm bg-[#b28b51] border-none text-white"
+                                    data-aos="fade-up"
+                                >
+                                    Explore More
+                                </Link>
+                            </motion.div>
                         </div>
                     </div>
                 ))}
