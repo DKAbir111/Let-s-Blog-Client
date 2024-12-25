@@ -15,7 +15,7 @@ export default function TrendingBlogs() {
 
     return (
         <div className="my-12 container mx-auto">
-            <h3 className="text-2xl text-center text-gray-800 font-semibold mb-6">
+            <h3 className="text-3xl text-center text-[#b28b51] font-lustria font-semibold mb-6">
                 Trending Blogs
             </h3>
             <Marquee pauseOnHover gradient={false} speed={50}>
@@ -35,7 +35,7 @@ export default function TrendingBlogs() {
                             </h4>
                             <p className="text-xs text-gray-500 mb-2">{blog.category}</p>
                             <p className="text-xs text-gray-400 mb-4">
-                                {blog.shortDescription}
+                                {blog.shortDescription.split(" ").slice(0, 8).join(" ") + "..."}
                             </p>
                             <Link
                                 to={`/blog/${blog._id}`}
