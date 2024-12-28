@@ -11,7 +11,7 @@ const FeaturedBlog = () => {
 
     // Fetch blog data
     useEffect(() => {
-        fetch("http://localhost:5001/api/top-posts")
+        fetch("https://full-stack-job-portal-server.onrender.com/api/top-posts")
             .then((response) => response.json())
             .then((data) => {
                 setBlogs(data);

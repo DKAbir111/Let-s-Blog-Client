@@ -16,17 +16,17 @@ export default function TopBar() {
                     <FaPinterest />
                     <FaInstagram />
                 </div>
-                <div className='md:flex justify-center'>
+                <Link to={'/'} className='md:flex justify-center'>
                     <img src={logo} alt="Blog Logo" className='w-1/4 md:w-1/3' />
-                </div>
+                </Link>
                 <div className='flex items-center '>
                     <div className="drawer drawer-end font-lato">
                         <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
                         <div className="drawer-content">
                             {/* Page content here */}
                             <label htmlFor="my-drawer-4" className="flex gap-3 items-center cursor-pointer">
-                                <FaSearch className='md:hidden' />
-                                <GiHamburgerMenu className='text-3xl md:hidden' />
+                                <FaSearch className='md:hidden text-4xl' />
+                                <GiHamburgerMenu className='text-6xl md:hidden' />
                                 {
                                     user?.email ?
                                         <>

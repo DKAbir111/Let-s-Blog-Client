@@ -17,7 +17,7 @@ const RecentBlogs = () => {
 
     useEffect(() => {
         axios
-            .get("http://localhost:5001/api/latest-blogs")
+            .get("https://full-stack-job-portal-server.onrender.com/api/latest-blogs")
             .then((response) => {
                 setBlogs(response.data);
             })

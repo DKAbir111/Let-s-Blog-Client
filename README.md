@@ -93,5 +93,5 @@ The purpose of this project is to develop a dynamic and responsive blog platform
 ### 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone <https://github.com/DKAbir111/Let-s-Blog-Client.git>
 cd Blog-Website

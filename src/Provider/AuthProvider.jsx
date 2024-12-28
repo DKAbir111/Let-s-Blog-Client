@@ -15,7 +15,7 @@ export default function AuthProvider({ children }) {
             setUser(currentUser);
             if (currentUser?.email) {
                 const user = { email: currentUser.email }
-                axios.post('http://localhost:5001/jwt', user, {
+                axios.post('https://full-stack-job-portal-server.onrender.com/jwt', user, {
                     withCredentials: true,
                 })
                     .then(res => {
@@ -27,7 +27,7 @@ export default function AuthProvider({ children }) {
             }
 
             else {
-                axios.post('http://localhost:5001/logout', {}, {
+                axios.post('https://full-stack-job-portal-server.onrender.com/logout', {}, {
                     withCredentials: true
                 })
                     .then(res => {
@@ -65,7 +65,7 @@ export default function AuthProvider({ children }) {
         return signOut(auth)
     }
     const addWishList = (id, email) => {
-        axios.post('http://localhost:5001/api/wishlist', { blogId: id, email: email })
+        axios.post('https://full-stack-job-portal-server.onrender.com/api/wishlist', { blogId: id, email: email })
             .then(res => {
                 if (res.data.insertedId) {
                     toast.success('Successfully add to wishlist')

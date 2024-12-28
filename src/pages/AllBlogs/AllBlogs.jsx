@@ -12,7 +12,7 @@ export default function AllBlogs() {
 
     const handleSearch = (e) => {
         const searchText = e.target.value;
-        axios.get(`http://localhost:5001/api/blogs?q=${searchText}&category=${filterText}`)
+        axios.get(`https://full-stack-job-portal-server.onrender.com/api/blogs?q=${searchText}&category=${filterText}`)
             .then(res => {
                 setFilterBlogs(res.data);
             }).catch(err => {
@@ -22,7 +22,7 @@ export default function AllBlogs() {
 
     const handleFilter = (category) => {
         setFilterText(category);
-        axios.get(`http://localhost:5001/api/blogs?&category=${category}`)
+        axios.get(`https://full-stack-job-portal-server.onrender.com/api/blogs?&category=${category}`)
             .then(res => {
                 setFilterBlogs(res.data);
             }).catch(err => {

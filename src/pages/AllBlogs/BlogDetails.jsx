@@ -14,7 +14,7 @@ export default function BlogDetails() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5001/api/comment/${id}`)
+      .get(`https://full-stack-job-portal-server.onrender.com/api/comment/${id}`)
       .then((response) => {
         setComments(response.data);
       })
@@ -33,7 +33,7 @@ export default function BlogDetails() {
     };
 
     axios
-      .post("http://localhost:5001/api/comment", newComment)
+      .post("https://full-stack-job-portal-server.onrender.com/api/comment", newComment)
       .then((response) => {
         setComments((prev) => [...prev, response.data]);
         setCommentText("");
