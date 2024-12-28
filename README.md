@@ -95,3 +95,13 @@ The purpose of this project is to develop a dynamic and responsive blog platform
 ```bash
 git clone <https://github.com/DKAbir111/Let-s-Blog-Client.git>
 cd Blog-Website
+
+## Snapshots
+
+
+![Homepage](./screenshots/1.png)
+
+![Blog Details Page](./screenshots/2.png)
+
+![Wishlist Page](./screenshots/3.png)
+
