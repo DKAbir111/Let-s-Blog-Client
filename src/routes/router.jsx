@@ -31,7 +31,7 @@ const router = createBrowserRouter([
             {
                 path: '/all-blog',
                 element: <AllBlogs />,
-                loader: () => fetch('https://full-stack-job-portal-server.onrender.com/api/blogs')
+                loader: () => fetch('https://let-s-blog-server.vercel.app/api/blogs')
             },
             {
                 path: '/featured-blog',
@@ -40,12 +40,12 @@ const router = createBrowserRouter([
             {
                 path: "/blog/:id",
                 element: <PrivateRoutes><BlogDetails /></PrivateRoutes>,
-                loader: ({ params }) => fetch(`https://full-stack-job-portal-server.onrender.com/api/blog/${params.id}`)
+                loader: ({ params }) => fetch(`https://let-s-blog-server.vercel.app/api/blog/${params.id}`)
             },
             {
                 path: "/update-blog/:id",
                 element: <PrivateRoutes><UpdateBlog /> </PrivateRoutes>,
-                loader: ({ params }) => fetch(`https://full-stack-job-portal-server.onrender.com/api/blog/${params.id}`)
+                loader: ({ params }) => fetch(`https://let-s-blog-server.vercel.app/api/blog/${params.id}`)
             },
             {
                 path: '/wish-list',
@@ -62,5 +62,6 @@ const router = createBrowserRouter([
         ]
     },
 ]);
+
 
 export default router;

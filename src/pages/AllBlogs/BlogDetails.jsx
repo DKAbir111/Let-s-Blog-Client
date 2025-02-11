@@ -14,7 +14,7 @@ export default function BlogDetails() {
 
   useEffect(() => {
     axios
-      .get(`https://full-stack-job-portal-server.onrender.com/api/comment/${id}`)
+      .get(`https://let-s-blog-server.vercel.app/api/comment/${id}`)
       .then((response) => {
         setComments(response.data);
       })
@@ -33,7 +33,7 @@ export default function BlogDetails() {
     };
 
     axios
-      .post("https://full-stack-job-portal-server.onrender.com/api/comment", newComment)
+      .post("https://let-s-blog-server.vercel.app/api/comment", newComment)
       .then((response) => {
         setComments((prev) => [...prev, response.data]);
         setCommentText("");

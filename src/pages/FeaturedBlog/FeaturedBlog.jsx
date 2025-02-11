@@ -11,7 +11,7 @@ const FeaturedBlog = () => {
 
     // Fetch blog data
     useEffect(() => {
-        fetch("https://full-stack-job-portal-server.onrender.com/api/top-posts")
+        fetch("https://let-s-blog-server.vercel.app/api/top-posts")
             .then((response) => response.json())
             .then((data) => {
                 setBlogs(data);
@@ -91,7 +91,7 @@ const FeaturedBlog = () => {
     }
 
     return (
-        <div className="container mx-auto p-6">
+        <div className="container mx-auto p-6 min-h-screen">
             <h1 className="text-3xl font-semibold mb-8 text-center text-gray-900 font-lustria">Featured Blogs</h1>
             <div className="overflow-x-auto">
                 <DataTable

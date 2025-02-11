@@ -7,7 +7,7 @@ const VividImpressions = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get('https://full-stack-job-portal-server.onrender.com/api/comments/random')
+        axios.get('https://let-s-blog-server.vercel.app/api/comments/random')
             .then(res => {
                 setCommentData(res.data);
                 setLoading(false);

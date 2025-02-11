@@ -7,7 +7,7 @@ export default function TrendingBlogs() {
 
     // Fetch the top posts from the API
     useEffect(() => {
-        fetch("https://full-stack-job-portal-server.onrender.com/api/top-posts")
+        fetch("https://let-s-blog-server.vercel.app/api/top-posts")
             .then((response) => response.json())
             .then((data) => setTopPosts(data))
             .catch((error) => console.error("Error fetching data: ", error));

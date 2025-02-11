@@ -17,7 +17,7 @@ const RecentBlogs = () => {
 
     useEffect(() => {
         axios
-            .get("https://full-stack-job-portal-server.onrender.com/api/latest-blogs")
+            .get("https://let-s-blog-server.vercel.app/api/latest-blogs")
             .then((response) => {
                 setBlogs(response.data);
             })
