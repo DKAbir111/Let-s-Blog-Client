@@ -10,6 +10,7 @@ import { motion } from "framer-motion";  // Import framer-motion
 const RecentBlogs = () => {
     const [blogs, setBlogs] = useState([]);
     const { user, addWishList } = useContext(AuthContext);
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         AOS.init();
@@ -20,11 +21,18 @@ const RecentBlogs = () => {
             .get("https://let-s-blog-server.vercel.app/api/latest-blogs")
             .then((response) => {
                 setBlogs(response.data);
+                setLoading(false);
             })
             .catch((error) => {
                 console.error("Error fetching blogs:", error);
             });
     }, []);
+
+    if (loading) {
+        return <div className="flex justify-center items-center col-span-3 text-[#b28b51]">
+            <span className="loading loading-bars loading-md"></span>
+        </div>
+    }
 
     return (
         <section className="py-16 bg-gray-50 font-lato" data-aos="fade-up">

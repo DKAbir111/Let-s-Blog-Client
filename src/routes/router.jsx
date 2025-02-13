@@ -22,7 +22,16 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <HomeLayout />
+                element: <HomeLayout />,
+                // loader: async () => {
+                //     const [latestBlog] = await Promise.all([
+                //         fetch('https://let-s-blog-server.vercel.app/api/latest-blogs')
+                //     ])
+                //     const latestBlogs = await latestBlog.json();
+
+                //     return { latestBlogs };
+                // }
+
             },
             {
                 path: "/add-blog",
