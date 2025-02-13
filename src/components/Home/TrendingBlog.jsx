@@ -1,26 +1,11 @@
 import Marquee from "react-fast-marquee";
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+export default function TrendingBlogs({ topPosts, loading }) {
 
-export default function TrendingBlogs() {
-    const [topPosts, setTopPosts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null); // New state to track errors
 
     // Fetch the top posts from the API
-    useEffect(() => {
-        fetch("https://let-s-blog-server.vercel.app/api/top-posts")
-            .then((response) => response.json())
-            .then((data) => {
-                setTopPosts(data);
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.error("Error fetching data: ", error);
-                setError("Failed to load trending blogs. Please try again later.");
-                setLoading(false); // Stop the loader on error
-            });
-    }, []);
+
 
     if (loading) {
         return (
@@ -30,13 +15,6 @@ export default function TrendingBlogs() {
         );
     }
 
-    if (error) {
-        return (
-            <div className="text-center text-red-500">
-                <p>{error}</p>
-            </div>
-        );
-    }
 
     return (
         <div className="my-12 container mx-auto font-lato">
@@ -78,3 +56,10 @@ export default function TrendingBlogs() {
         </div>
     );
 }
+
+
+// prop-validation
+TrendingBlogs.propTypes = {
+    topPosts: PropTypes.arrayOf(PropTypes.object).isRequired,
+    loading: PropTypes.bool.isRequired,
+};
