@@ -9,18 +9,21 @@ import axios from "axios";
 export default function HomeLayout() {
     const [topPosts, setTopPosts] = useState([]);
     const [commentData, setCommentData] = useState([]);
+    const [recentData, setRecentData] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [topPostsRes, commentsRes] = await Promise.all([
+                const [topPostsRes, commentsRes, recentBlogs] = await Promise.all([
                     fetch("https://let-s-blog-server.vercel.app/api/top-posts").then(res => res.json()),
-                    axios.get("https://let-s-blog-server.vercel.app/api/comments/random")
+                    axios.get("https://let-s-blog-server.vercel.app/api/comments/random"),
+                    axios.get("https://let-s-blog-server.vercel.app/api/latest-blogs")
                 ]);
 
                 setTopPosts(topPostsRes);
                 setCommentData(commentsRes.data);
+                setRecentData(recentBlogs.data);
             } catch (error) {
                 console.error("Error fetching data:", error);
             } finally {
@@ -34,7 +37,7 @@ export default function HomeLayout() {
     return (
         <div>
             <Banner />
-            <RecentBlogs />
+            <RecentBlogs blogs={recentData} loading={loading} />
             <TrendingBlog topPosts={topPosts} loading={loading} />
             <VividImpressions commentData={commentData} loading={loading} />
             <Newsletter />

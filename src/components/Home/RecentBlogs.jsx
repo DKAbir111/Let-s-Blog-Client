@@ -1,34 +1,22 @@
-import { useState, useEffect, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import PropTypes from "prop-types";
 import "aos/dist/aos.css";
 import AOS from "aos";
 import AuthContext from "../../context/AuthContext";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";  // Import framer-motion
 
-const RecentBlogs = () => {
-    const [blogs, setBlogs] = useState([]);
+const RecentBlogs = ({ loading, blogs }) => {
+
     const { user, addWishList } = useContext(AuthContext);
-    const [loading, setLoading] = useState(true);
+
 
     useEffect(() => {
         AOS.init();
         AOS.refresh(); // Ensure AOS is refreshed after initial load
     }, []);
 
-    useEffect(() => {
-        axios
-            .get("https://let-s-blog-server.vercel.app/api/latest-blogs")
-            .then((response) => {
-                setBlogs(response.data);
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.error("Error fetching blogs:", error);
-                setLoading(false);  // Stop the loader if an error occurs
-            });
-    }, []);
 
     if (loading) {
         return (
@@ -43,11 +31,11 @@ const RecentBlogs = () => {
             <div className="container mx-auto text-center">
                 <h2 className="text-3xl font-semibold text-[#b28b51] mb-8 font-lustria">Recent Blogs</h2>
                 {/* Show message if no blogs are found */}
-                {blogs.length === 0 && !loading && (
+                {blogs?.length === 0 && !loading && (
                     <p className="text-gray-500 col-span-3">No recent blogs found.</p>
                 )}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {blogs.map((blog) => (
+                    {blogs?.map((blog) => (
                         <div
                             key={blog._id}
                             className="bg-white rounded-sm shadow-lg overflow-hidden transform transition-transform duration-300"
@@ -109,3 +97,10 @@ const RecentBlogs = () => {
 };
 
 export default RecentBlogs;
+
+//prop-validation
+RecentBlogs.propTypes = {
+    loading: PropTypes.bool.isRequired,
+    blogs: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
+
