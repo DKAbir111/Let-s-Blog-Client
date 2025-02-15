@@ -40,12 +40,12 @@ const router = createBrowserRouter([
             {
                 path: "/blog/:id",
                 element: <PrivateRoutes><BlogDetails /></PrivateRoutes>,
-                loader: ({ params }) => fetch(`https://blog-server-new-steel.vercel.app/api/blog/${params.id}`)
+                loader: ({ params }) => fetch(`https://full-stack-job-portal-server.onrender.com/api/blog/${params.id}`)
             },
             {
                 path: "/update-blog/:id",
                 element: <PrivateRoutes><UpdateBlog /> </PrivateRoutes>,
-                loader: ({ params }) => fetch(`https://blog-server-new-steel.vercel.app/api/blog/${params.id}`)
+                loader: ({ params }) => fetch(`https://full-stack-job-portal-server.onrender.com/api/blog/${params.id}`)
             },
             {
                 path: '/wish-list',

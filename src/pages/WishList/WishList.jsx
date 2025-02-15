@@ -11,7 +11,7 @@ const WishlistPage = () => {
 
     useEffect(() => {
         if (user?.email) {
-            axios.get(`https://blog-server-new-steel.vercel.app/api/wishlist?email=${user.email}`, {
+            axios.get(`https://full-stack-job-portal-server.onrender.com/api/wishlist?email=${user.email}`, {
                 withCredentials: true,
             })
                 .then((res) => {
@@ -28,7 +28,7 @@ const WishlistPage = () => {
 
 
     const handleRemoveWishlist = (wishId) => {
-        axios.delete(`https://blog-server-new-steel.vercel.app/api/wishlist/${wishId}`,
+        axios.delete(`https://full-stack-job-portal-server.onrender.com/api/wishlist/${wishId}`,
             {
                 data: { email: user.email },
                 withCredentials: true,

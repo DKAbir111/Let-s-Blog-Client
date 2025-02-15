@@ -19,7 +19,7 @@ const RecentBlogs = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            await axios.get('https://blog-server-new-steel.vercel.app/api/top-posts')
+            await axios.get('https://full-stack-job-portal-server.onrender.com/api/top-posts')
                 .then(res => {
                     setBlogs(res.data);
                     setLoading(false);

@@ -10,7 +10,7 @@ const VividImpressions = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            await axios.get('https://blog-server-new-steel.vercel.app/api/comments/random')
+            await axios.get('https://full-stack-job-portal-server.onrender.com/api/comments/random')
                 .then(res => {
                     setBlogs(res.data);
                     setLoading(false);

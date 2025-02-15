@@ -16,7 +16,7 @@ const UpdateBlog = () => {
         const shortDescription = Form.shortDescription.value;
         const longDescription = Form.longDescription.value;
         const newBlog = { title, imageUrl, category, shortDescription, longDescription };
-        axios.put(`https://blog-server-new-steel.vercel.app/api/blog/${blog._id}`, newBlog)
+        axios.put(`https://full-stack-job-portal-server.onrender.com/api/blog/${blog._id}`, newBlog)
             .then(res => {
                 if (res.data.modifiedCount > 0) {
                     toast.success('Blog updated successfully');

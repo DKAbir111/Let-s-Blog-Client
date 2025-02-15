@@ -11,7 +11,7 @@ const FeaturedBlog = () => {
 
     // Fetch blog data
     useEffect(() => {
-        fetch("https://blog-server-new-steel.vercel.app/api/top-posts")
+        fetch("https://full-stack-job-portal-server.onrender.com/api/top-posts")
             .then((response) => response.json())
             .then((data) => {
                 setBlogs(data);
