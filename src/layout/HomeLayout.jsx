@@ -12,27 +12,64 @@ export default function HomeLayout() {
     const [recentData, setRecentData] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const [topPostsRes, commentsRes, recentBlogs] = await Promise.all([
-                    fetch("https://let-s-blog-server.vercel.app/api/top-posts").then(res => res.json()),
-                    axios.get("https://let-s-blog-server.vercel.app/api/comments/random"),
-                    axios.get("https://let-s-blog-server.vercel.app/api/latest-blogs")
-                ]);
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const [topPostsRes, commentsRes, recentBlogs] = await Promise.all([
+    //                 fetch("https://let-s-blog-server.vercel.app/api/top-posts").then(res => res.json()),
+    //                 axios.get("https://let-s-blog-server.vercel.app/api/comments/random"),
+    //                 axios.get("https://let-s-blog-server.vercel.app/api/latest-blogs")
+    //             ]);
 
-                setTopPosts(topPostsRes);
-                setCommentData(commentsRes.data);
-                setRecentData(recentBlogs.data);
+    //             setTopPosts(topPostsRes);
+    //             setCommentData(commentsRes.data);
+    //             setRecentData(recentBlogs.data);
+    //         } catch (error) {
+    //             console.error("Error fetching data:", error);
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
+
+    //     fetchData();
+    // }, []);
+
+    useEffect(() => {
+        const fetchTopPosts = async () => {
+            try {
+                const res = await axios.get("https://let-s-blog-server.vercel.app/api/top-posts");
+                setTopPosts(res.data);
             } catch (error) {
-                console.error("Error fetching data:", error);
-            } finally {
-                setLoading(false);
+                console.error("Error fetching top posts:", error);
             }
         };
 
-        fetchData();
+        const fetchComments = async () => {
+            try {
+                const res = await axios.get("https://let-s-blog-server.vercel.app/api/comments/random");
+                setCommentData(res.data);
+            } catch (error) {
+                console.error("Error fetching comments:", error);
+            }
+        };
+
+        const fetchRecentBlogs = async () => {
+            try {
+                const res = await axios.get("https://let-s-blog-server.vercel.app/api/latest-blogs");
+                setRecentData(res.data);
+            } catch (error) {
+                console.error("Error fetching recent blogs:", error);
+            }
+        };
+
+        // Call all fetch functions
+        fetchTopPosts();
+        fetchComments();
+        fetchRecentBlogs();
+        setLoading(false); // Update loading state
     }, []);
+
+    console.log(recentData);
 
     return (
         <div>
