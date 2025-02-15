@@ -8,15 +8,18 @@ export default function TrendingBlogs() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get('https://let-s-blog-server.vercel.app/api/latest-blogs')
-            .then(res => {
-                setBlogs(res.data);
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error("Error fetching blogs:", error);
-                setLoading(false);
-            });
+        const fetchData = async () => {
+            await axios.get('https://blog-server-new-steel.vercel.app/api/latest-blogs')
+                .then(res => {
+                    setBlogs(res.data);
+                    setLoading(false);
+                })
+                .catch(error => {
+                    console.error("Error fetching blogs:", error);
+                    setLoading(false)
+                });
+        }
+        fetchData();
     }, []);
 
     return (

@@ -25,7 +25,7 @@ const router = createBrowserRouter([
                 element: <HomeLayout />,
                 // loader: async () => {
                 //     const [latestBlog] = await Promise.all([
-                //         fetch('https://let-s-blog-server.vercel.app/api/latest-blogs')
+                //         fetch('https://blog-server-new-steel.vercel.app/api/latest-blogs')
                 //     ])
                 //     const latestBlogs = await latestBlog.json();
 
@@ -40,7 +40,7 @@ const router = createBrowserRouter([
             {
                 path: '/all-blog',
                 element: <AllBlogs />,
-                loader: () => fetch('https://let-s-blog-server.vercel.app/api/blogs')
+                loader: () => fetch('https://blog-server-new-steel.vercel.app/api/blogs')
             },
             {
                 path: '/featured-blog',
@@ -49,12 +49,12 @@ const router = createBrowserRouter([
             {
                 path: "/blog/:id",
                 element: <PrivateRoutes><BlogDetails /></PrivateRoutes>,
-                loader: ({ params }) => fetch(`https://let-s-blog-server.vercel.app/api/blog/${params.id}`)
+                loader: ({ params }) => fetch(`https://blog-server-new-steel.vercel.app/api/blog/${params.id}`)
             },
             {
                 path: "/update-blog/:id",
                 element: <PrivateRoutes><UpdateBlog /> </PrivateRoutes>,
-                loader: ({ params }) => fetch(`https://let-s-blog-server.vercel.app/api/blog/${params.id}`)
+                loader: ({ params }) => fetch(`https://blog-server-new-steel.vercel.app/api/blog/${params.id}`)
             },
             {
                 path: '/wish-list',

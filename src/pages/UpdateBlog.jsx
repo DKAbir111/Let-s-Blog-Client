@@ -16,7 +16,7 @@ const UpdateBlog = () => {
         const shortDescription = Form.shortDescription.value;
         const longDescription = Form.longDescription.value;
         const newBlog = { title, imageUrl, category, shortDescription, longDescription };
-        axios.put(`https://let-s-blog-server.vercel.app/api/blog/${blog._id}`, newBlog)
+        axios.put(`https://blog-server-new-steel.vercel.app/api/blog/${blog._id}`, newBlog)
             .then(res => {
                 if (res.data.modifiedCount > 0) {
                     toast.success('Blog updated successfully');

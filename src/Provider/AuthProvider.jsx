@@ -15,7 +15,7 @@ export default function AuthProvider({ children }) {
             setUser(currentUser);
             if (currentUser?.email) {
                 const user = { email: currentUser.email }
-                axios.post('https://let-s-blog-server.vercel.app/jwt', user, {
+                axios.post('https://blog-server-new-steel.vercel.app/jwt', user, {
                     withCredentials: true,
                 })
                     .then(res => {
@@ -27,7 +27,7 @@ export default function AuthProvider({ children }) {
             }
 
             else {
-                axios.post('https://let-s-blog-server.vercel.app/logout', {}, {
+                axios.post('https://blog-server-new-steel.vercel.app/logout', {}, {
                     withCredentials: true
                 })
                     .then(res => {
@@ -65,7 +65,7 @@ export default function AuthProvider({ children }) {
         return signOut(auth)
     }
     const addWishList = (id, email) => {
-        axios.post('https://let-s-blog-server.vercel.app/api/wishlist', { blogId: id, email: email })
+        axios.post('https://blog-server-new-steel.vercel.app/api/wishlist', { blogId: id, email: email })
             .then(res => {
                 if (res.data.insertedId) {
                     toast.success('Successfully add to wishlist')

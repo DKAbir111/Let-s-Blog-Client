@@ -17,7 +17,7 @@ const AddBlog = () => {
         const longDescription = Form.longDescription.value;
         const newBlog = { title, imageUrl, category, shortDescription, longDescription, email: user?.email };
         try {
-            axios.post('https://let-s-blog-server.vercel.app/api/blog', newBlog)
+            axios.post('https://blog-server-new-steel.vercel.app/api/blog', newBlog)
                 .then(res => {
                     if (res.data.insertedId) {
                         toast.success('Blog added successfully');
