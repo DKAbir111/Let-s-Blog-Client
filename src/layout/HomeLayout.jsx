@@ -68,9 +68,6 @@ export default function HomeLayout() {
         fetchRecentBlogs();
         setLoading(false); // Update loading state
     }, []);
-
-    console.log(recentData);
-
     return (
         <div>
             <Banner />
