@@ -23,14 +23,6 @@ const router = createBrowserRouter([
             {
                 path: "/",
                 element: <HomeLayout />,
-                // loader: async () => {
-                //     const [latestBlog] = await Promise.all([
-                //         fetch('https://blog-server-new-steel.vercel.app/api/latest-blogs')
-                //     ])
-                //     const latestBlogs = await latestBlog.json();
-
-                //     return { latestBlogs };
-                // }
 
             },
             {
@@ -40,7 +32,6 @@ const router = createBrowserRouter([
             {
                 path: '/all-blog',
                 element: <AllBlogs />,
-                loader: () => fetch('https://blog-server-new-steel.vercel.app/api/blogs')
             },
             {
                 path: '/featured-blog',

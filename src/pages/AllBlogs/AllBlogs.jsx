@@ -1,12 +1,20 @@
-import { useLoaderData } from "react-router-dom";
 import Blog from "./Blog";
 import { IoFilter } from "react-icons/io5";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
 export default function AllBlogs() {
-    const blogs = useLoaderData();
+    const [blogs, setBlogs] = useState([])
+    useEffect(() => {
+        axios.get('https://blog-server-new-steel.vercel.app/api/blogs')
+            .then(res => {
+                setBlogs(res.data);
+                setFilterBlogs(res.data);
+            }).catch(err => {
+                console.error(err.message);
+            });
+    }, [])
     const [filterBlogs, setFilterBlogs] = useState(blogs || []);
     const [filterText, setFilterText] = useState('');
 
@@ -29,6 +37,7 @@ export default function AllBlogs() {
                 toast.error(err.message);
             });
     };
+
 
     return (
         <section>
